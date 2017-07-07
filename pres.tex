@@ -126,9 +126,9 @@ Petnica Summer School of Machine Learning\\ % Your institution for the title pag
 	\item What is this talk about?
 	\item Unlike the most of the things you will be learning in this course, this model is new
 	\item New idea
-	\item Nobody is still not sure how it works
-	\item Our understanding of it changes from week to week
+	\item Nobody is still sure how it works
 	\item Compared to other ML models, we're still in early stages
+	\item Our understanding of it changes from week to week
 \end{itemize}
 \begin{block}{Yann LeCun}
 "The most important one, in my opinion, is adversarial training (also called GAN for Generative Adversarial Networks).
@@ -142,7 +142,7 @@ This, and the variations that are now being proposed is the most interesting ide
 \begin{frame}
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.85\textwidth]{gan_timeline.jpg}
+	\includegraphics[width=0.95\textwidth]{gan_timeline.jpg}
 	\caption{GAN timeline}
 	\label{fig:gan_timeline}
 \end{figure}
@@ -150,6 +150,23 @@ This, and the variations that are now being proposed is the most interesting ide
 \end{frame}
 
 %------------------------------------------------
+
+\begin{frame}
+	\frametitle{GAN: Just tell me what it is}
+	\begin{itemize}
+		\item Generative machine learning model in which two neural networks are competing against each other
+	\end{itemize}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{dcgan_both.png}
+\end{figure}
+	\begin{itemize}
+		\item Instead of using a standard fixed cost function, we \textit{learn} the cost function with the neural network
+		\item We alternate between training different parts of the network
+		\item It's difficult to train and analyze
+	\end{itemize}
+\footnotetext{https://github.com/dmonn/GAN-face-generator}
+\end{frame}
 
 \begin{frame}
 \begin{figure}[h!]
@@ -194,25 +211,28 @@ This, and the variations that are now being proposed is the most interesting ide
 \begin{frame}
 \frametitle{What is this talk about?}
 \begin{itemize}
-	\item This talk is going to be about theory behind GANs
-	\item It's WIP.
-	\item We still don't know what those principles are.
+	\item Theory behind Generative Adversarial Networks
+	\item Comparison of different models
+	\item Practical advice for training
+	\item Everything is a Work In Progress.
 \end{itemize}
 
 \end{frame}
 
+
 \section{Prerequisites}
+
 
 \begin{frame}
 \frametitle{Prerequisites}
+\begin{itemize}
+	\item Understanding real world data
+	\item Natural data forms a low dimensional manifold in its embedding space
+\end{itemize}
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=\textwidth]{manifold_hypothesis.jpg}
+	\includegraphics[width=0.8\textwidth]{manifold_hypothesis.jpg}
 \end{figure}
-
-\begin{itemize}
-	\item Natural data forms a lower dimensional manifold in its embedding space
-\end{itemize}
 
 \end{frame}
 \begin{frame}
@@ -230,17 +250,6 @@ This, and the variations that are now being proposed is the most interesting ide
 \end{figure}
 
 \end{frame}
-
-\begin{frame}
-\frametitle{Perspectives}
-\begin{itemize}
-	\item Distribution matching
-	\item Neural network as a cost function
-	\item Modular training
-	\item Two player minimax game
-\end{itemize}
-\end{frame}
-
 
 \begin{frame}
 \begin{figure}[h!]
@@ -263,7 +272,7 @@ This, and the variations that are now being proposed is the most interesting ide
 		\item We have parameters $\theta$
 		\item We can define a parametric function $g_\theta$ that generates samples from a certain distribution $\mathbb{P}_\theta$
 		\item We have samples from the real data distribution $\mathbb{P}_\textit{r}$
-		\item By varying $\theta$ we can make the $\mathbb{P}_\theta$ distribution arbitrarily close to $\mathbb{P}_\textit{r}$
+		\item By varying weights of the neural network we can make the $\mathbb{P}_\theta$ distribution arbitrarily close to $\mathbb{P}_\textit{r}$
 		\item How do we define ``close"?
 \end{itemize}
 \end{frame}
@@ -293,7 +302,7 @@ This, and the variations that are now being proposed is the most interesting ide
 \begin{column}{0.5\textwidth}
 \begin{itemize}
 	\item Trying to recreate existing images
-	\item Encoding the images into the bottlenech $\theta$
+	\item Encoding the images into the bottleneck $\theta$
 	\item Implicitly training the network to extract useful features
 \end{itemize}
 \end{column}
@@ -317,7 +326,7 @@ This, and the variations that are now being proposed is the most interesting ide
 \end{frame}
 %------------------------------------------------
 \begin{frame}
-	\frametitle{A common pattern}
+	\frametitle{Core principles}
 	\begin{itemize}
 		\item Neural network is a computational graph!
 		\item Backpropagation is reverse-mode automatic differentiation
@@ -364,35 +373,25 @@ This, and the variations that are now being proposed is the most interesting ide
 \begin{frame}
 	\frametitle{Things to note}
 	\begin{itemize}
+		\item Cost function is not parametrized (it's fixed)
 		\item We train the network with just one cost function
-		\item Cost function is fixed
-		\item The way weights are shared and clamped doesn't change throught the training
-
+		\item Weight freezing and sharing is fixed throughout the training
 	\end{itemize}
 \end{frame}
 
 %------------------------------------------------
 \begin{frame}
-	\frametitle{A common pattern}
+	\frametitle{Cost function}
 	\begin{itemize}
-		\item Where does the neural network end the cost function begin?
-		\item We optimize computational graph, but it's constituents have different semantics
-		\item How is the cost function different from a neural network layer?
-		\item 
-		\item MSE needs to average over all possibilities
-		\item Square error - a simple parabole, is it sufficient?
+		\item MSE needs to average over all possibilities and choose a single answer
+		\item Square error - a simple parabola, is it sufficient?
 	\end{itemize}
-\end{frame}
-%------------------------------------------------
-\begin{frame}
-	\frametitle{MSE loss vs Adversarial loss}
 	\begin{figure}[h!]
-	\centering
-	\includegraphics[width=\textwidth]{mse_vs_adversarial.png}
-\end{figure}
+		\centering
+		\includegraphics[width=\textwidth]{mse_vs_adversarial.png}
+	\end{figure}
 	\footnotetext{Ian J. Goodfellow:
 NIPS 2016 Tutorial: Generative Adversarial Networks}
-
 \end{frame}
 %------------------------------------------------
 \begin{frame}
@@ -409,6 +408,9 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 \begin{frame}
 	\frametitle{A common pattern}
 	\begin{itemize}
+		\item Standard NN with a cost function
+		\item One phase of training GAN is the same 
+		\item Other phase of GAN is training the cost function
 	\end{itemize}
 \end{frame}
 
@@ -490,6 +492,7 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 		\item Very unstable
 		\item We're training the cost function at the same time as the generator - we want the cost function to be as good as possible
 		\item But we can't train it to be \textit{too good} since the gradients computed with KL will vanish
+		\item Why? Because distributions have low dimensional support and KL does to infinity when Q is zero
 		\item Requires careful tuning of hyperparameters and has the "it works but we don't know why" philosophy
 		\item Difficult to train
 		\item Loss doesn't correlate with image quality
@@ -513,6 +516,41 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 
 %------------------------------------------------
 \begin{frame}
+	\frametitle{Learning distributions - toy example}
+	\begin{columns}
+	\begin{column}{0.5\textwidth}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.9\textwidth]{two_lines.png}
+	\end{figure}
+	\pause
+	$\mathbb{P}_r = (0, y) \quad \quad \quad \quad \quad \quad \mathbb{P}_g = (\theta, y)$
+	\pause
+	\begin{center}
+		$y \sim U\big[0, 1\big]$
+	\end{center}
+	\end{column}
+	\begin{column}{0.5\textwidth}  %%<--- here
+	\pause
+	\begin{itemize}
+		\item Two distributions defined on $\mathbb{R}^2$
+			\newline
+		\pause
+		\item  $ KL(\mathbb{P}_r \vert \vert \mathbb{P}_g) = +\infty$
+		\pause
+		\item  $ KL(\mathbb{P}_g \vert \vert \mathbb{P}_r) = +\infty$
+		\pause
+		\item  $ JS(\mathbb{P}_r, \mathbb{P}_g) = JS(\mathbb{P}_g, \mathbb{P}_r) = \log 2 $
+		\pause
+		\item  $ W(\mathbb{P}_r, \mathbb{P}_g) = W(\mathbb{P}_g, \mathbb{P}_r) = \vert \theta \vert $
+	\end{itemize}
+	\end{column}
+	\end{columns}
+	\footnotetext{http://www.alexirpan.com/2017/02/22/wasserstein-gan.html}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}
 	\frametitle{Game theory perspective}
 	\begin{itemize}
 		\item \textit{Competition} between the generator and the critic
@@ -526,6 +564,7 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 	\begin{itemize}
 		\item Can't really compare critics
 		\item Can't tell how how close to EM distance our estimate really is
+		\item KL-divergence, when parameters are right, seems to produce much better looking samples?
 	\end{itemize}
 \end{frame}
 
@@ -537,26 +576,30 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 	\end{itemize}
 \end{frame}
 %------------------------------------------------
-
-\begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
-\frametitle{Citation}
-An example of the \verb|\cite| command to cite within the presentation:\\~
-
-This statement requires citation \cite{p1}.
+\begin{frame}
+\frametitle{Perspectives}
+\begin{itemize}
+	\item Distribution matching
+	\item Neural network as a cost function
+	\item Modular training
+	\item Two player minimax game
+\end{itemize}
 \end{frame}
 
 %------------------------------------------------
 
 \begin{frame}
-\frametitle{References}
-\footnotesize{
-\begin{thebibliography}{99} % Beamer does not support BibTeX so references must be inserted manually as below
-\bibitem[Smith, 2012]{p1} John Smith (2012)
-\newblock Title of the publication
-\newblock \emph{Journal Name} 12(3), 45 -- 678.
-\end{thebibliography}
-}
+	\frametitle{Problems with GANs}
+	\begin{itemize}
+		\item Problems with counting
+		\item High level structure
+		\item Perspective
+		\item Sequential data
+		\item 
+	\end{itemize}
 \end{frame}
+
+
 %------------------------------------------------
 \begin{frame}
 	\frametitle{Open questions}
@@ -565,6 +608,9 @@ This statement requires citation \cite{p1}.
 		\item Best training regime?
 		\item Convergence conditions?
 		\item 
+		\item Where does the neural network end the cost function begin?
+		\item We optimize computational graph, but it's constituents have different semantics
+		\item How is the cost function different from a neural network layer?
 	\end{itemize}
 \end{frame}
 
