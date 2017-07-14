@@ -15,8 +15,8 @@
 %	PACKAGES AND THEMES
 %----------------------------------------------------------------------------------------
 
-\documentclass{beamer}
-
+\documentclass{bredelebeamer}
+\usefonttheme[onlymath]{serif}
 \mode<presentation> {
 
 % The Beamer class comes with a number of default slide themes
@@ -60,8 +60,7 @@
 %\usecolortheme{beetle}
 %\usecolortheme{crane}
 %\usecolortheme{dolphin}
-%\usecolortheme{dove}
-%\usecolortheme{fly}
+%\usecolortheme{dove} %\usecolortheme{fly}
 %\usecolortheme{lily}
 %\usecolortheme{orchid}
 %\usecolortheme{rose}
@@ -79,8 +78,10 @@
 \usepackage{graphicx} % Allows including images
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
 \usepackage{amssymb}
+\usepackage{amsmath}
 \usepackage{mathtools}
 \usepackage{pdfpages}
+\usepackage{bm}
 \usepackage[utf8]{inputenc}
 
 
@@ -117,8 +118,6 @@ Petnica Summer School of Machine Learning\\ % Your institution for the title pag
 %------------------------------------------------
 \section{Meta} % Sections can be created in order to organize your presentation into discrete blocks, all sections and subsections are automatically printed in the table of contents as an overview of the talk
 %------------------------------------------------
-
-\subsection{Subsection Example} % A subsection can be created just before a set of slides with a common theme to further break down your presentation into chunks
 
 \begin{frame}
 \frametitle{Meta}
@@ -163,9 +162,10 @@ This, and the variations that are now being proposed is the most interesting ide
 	\begin{itemize}
 		\item Instead of using a standard fixed cost function, we \textit{learn} the cost function with the neural network
 		\item We alternate between training different parts of the network
+		\item Forger and the police
 		\item It's difficult to train and analyze
 	\end{itemize}
-\footnotetext{https://github.com/dmonn/GAN-face-generator}
+\footnotetext{\url{https://github.com/dmonn/GAN-face-generator}}
 \end{frame}
 
 \begin{frame}
@@ -221,6 +221,7 @@ This, and the variations that are now being proposed is the most interesting ide
 
 
 \section{Prerequisites}
+\subsection{The manifold hypothesis}
 
 
 \begin{frame}
@@ -260,22 +261,18 @@ This, and the variations that are now being proposed is the most interesting ide
 	\includegraphics<4>[width=\textwidth]{distr/4.png}
 	\includegraphics<5>[width=\textwidth]{distr/5.png}
 	\includegraphics<6>[width=\textwidth]{distr/6.png}
-	\includegraphics<7>[width=\textwidth]{distr/7.png}
+	\includegraphics<7->[width=\textwidth]{distr/7.png}
 \end{figure}
-\end{frame} 
-
-\section{Basic principles}
-
-\begin{frame}
-\frametitle{Distribution matching}
-	\begin{itemize}
-		\item We have parameters $\theta$
-		\item We can define a parametric function $g_\theta$ that generates samples from a certain distribution $\mathbb{P}_\theta$
+\begin{itemize}[<+(7)->]
+	\item We have a random vector $ \bm{z} \sim \mathcal{Z}$
+		\item We can define a parametric function $g_\theta: \mathcal{Z} \rightarrow \mathcal{X}$ that generates samples from a certain distribution $\mathbb{P}_\theta$
 		\item We have samples from the real data distribution $\mathbb{P}_\textit{r}$
-		\item By varying weights of the neural network we can make the $\mathbb{P}_\theta$ distribution arbitrarily close to $\mathbb{P}_\textit{r}$
+		\item By varying $\theta$ we can make the $\mathbb{P}_\theta$ distribution arbitrarily close to $\mathbb{P}_\textit{r}$
 		\item How do we define ``close"?
 \end{itemize}
-\end{frame}
+\end{frame} 
+
+\section{Comparison with autoencoders}
 
 \begin{frame}
 \frametitle{First attempt}
@@ -324,6 +321,8 @@ This, and the variations that are now being proposed is the most interesting ide
 \end{figure}
 
 \end{frame}
+
+\subsection{Computational graph perspective}
 %------------------------------------------------
 \begin{frame}
 	\frametitle{Core principles}
@@ -333,6 +332,17 @@ This, and the variations that are now being proposed is the most interesting ide
 		\item Decomposing the network into basic building blocks
 	\end{itemize}
 \end{frame}
+
+%------------------------------------------------
+\begin{frame}
+	\frametitle{Things to note}
+	\begin{enumerate}
+		\item Cost function is not parametrized (it's fixed)
+		\item We train the network with just one cost function
+		\item Weight freezing and sharing is fixed throughout the training
+	\end{enumerate}
+\end{frame}
+
 
 %------------------------------------------------
 \begin{frame}
@@ -371,68 +381,28 @@ This, and the variations that are now being proposed is the most interesting ide
 \end{frame}
 %------------------------------------------------
 \begin{frame}
-	\frametitle{Things to note}
-	\begin{itemize}
-		\item Cost function is not parametrized (it's fixed)
-		\item We train the network with just one cost function
-		\item Weight freezing and sharing is fixed throughout the training
-	\end{itemize}
-\end{frame}
-
-%------------------------------------------------
-\begin{frame}
-	\frametitle{Cost function}
-	\begin{itemize}
-		\item MSE needs to average over all possibilities and choose a single answer
-		\item Square error - a simple parabola, is it sufficient?
-	\end{itemize}
-	\begin{figure}[h!]
-		\centering
-		\includegraphics[width=\textwidth]{mse_vs_adversarial.png}
-	\end{figure}
-	\footnotetext{Ian J. Goodfellow:
-NIPS 2016 Tutorial: Generative Adversarial Networks}
-\end{frame}
-%------------------------------------------------
-\begin{frame}
-	\frametitle{A common pattern}
+	\frametitle{Solution}
 	\begin{itemize}
 		\item The great idea - why don't we put a neural network as the cost function?
 		\item Introduces a lot of problems
 		\item How do we even train this thing?
 		\item How do we analyze it's behaviour?
+		\item Partial answer to the "How do we know it's close?" question from the beginning
 	\end{itemize}
 \end{frame}
 
+\subsection{Training regime}
 %------------------------------------------------
 \begin{frame}
-	\frametitle{A common pattern}
+	\frametitle{Training regime}
+	\begin{figure}[h!]
+	\centering
+	\includegraphics<1>[width=\textwidth]{GAN_optimization.png}
+	\includegraphics<2->[width=\textwidth]{GAN_optimization_two_step.png}
+	\end{figure}
+	\pause
 	\begin{itemize}
-		\item Standard NN with a cost function
-		\item One phase of training GAN is the same 
-		\item Other phase of GAN is training the cost function
-	\end{itemize}
-\end{frame}
-
-%------------------------------------------------
-\begin{frame}
-	\frametitle{Modular training, different objectives}
-	\begin{itemize}
-		\item Usually we have a cost function and we backprop through the whole network and change all the weights
-		\item GAN doesn't have just one cost function and it has different ways of backpropagating
-		\item LSTM has weights fixed in every time step
-		\item Convolutional network has weights fixed to form filters
-		\item GAN has weights fixed during different parts of training
-	\end{itemize}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-	\frametitle{A common pattern}
-	\begin{itemize}
-		\item Image with three different optimizations and ways of freezing weights
-		\item It boils down to two different things we optimize
+		\item Two-step optimization process
 	\end{itemize}
 \end{frame}
 
@@ -446,6 +416,9 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 		\item They both keep improving until the difference between fake and real money is imperceptible to us
 	\end{itemize}
 \end{frame}
+
+\section{Statistical distances}
+\subsection{Comparison of various statistical distances}
 %------------------------------------------------
 \begin{frame}
 	\frametitle{Different statistical distances}
@@ -470,48 +443,76 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 \end{frame}
 %------------------------------------------------
 \begin{frame}
-	\frametitle{KL-divergence}
+	\frametitle{Kullback-Leibler divergence}
 	\begin{exampleblock}{KL-divergence}
 	\[
-		KL(\mathbb{P} \vert \vert \mathbb{Q}) = \mathbb{E}_{x \sim \mathbb{P}} \Big[ \log \frac{P(x)}{Q(x)} \Big] = \int_{x} \log \frac{P(x)}{Q(x)} P(x) dx
+		KL(\mathbb{P} \vert \vert \mathbb{Q}) = \mathbb{E}_{x \sim \mathbb{P}} \left[ \log \frac{P(x)}{Q(x)} \right] \pause = \int_{x} \log \frac{P(x)}{Q(x)} P(x) dx
 	\]
 \end{exampleblock}
+\pause
 	\begin{itemize}
 		\item Doesn't satisfy triangle inequality and symmetry
 		\item Origins in information theory
 		\item Information gained when revising from prior Q to posterior P
-		\item Originally proposed by Goodfellow \textit{et al.} as the function to compute ``distance" with
-		\item Has some undesirable properties
+		\item Has some undesirable properties in the context of GANs
+	\end{itemize}
+\end{frame}
+%------------------------------------------------
+\begin{frame}
+	\frametitle{Jensen-Shannon divergence}
+	\begin{exampleblock}{JS-divergence}
+	\[
+		JS(\mathbb{P} \vert \vert \mathbb{Q}) &= \frac{1}{2}KL(\mathbb{P} \vert \vert \mathbb{M}) + \frac{1}{2}KL(\mathbb{Q} \vert \vert \mathbb{M})
+	\]
+		\pause
+	\[
+		\mathbb{M} &= \frac{1}{2}(\mathbb{P} + \mathbb{Q})
+	\]
+\end{exampleblock}
+	\pause
+	\begin{itemize}
+		\item Based on KL-divergence, with notable difference
+		\item Symmetric and bounded
+		\item Original GAN paper minimizes JS-divergence
 	\end{itemize}
 \end{frame}
 
-%------------------------------------------------
-\begin{frame}
-	\frametitle{History of training GANs with KL}
-	\begin{itemize}
-		\item Very unstable
-		\item We're training the cost function at the same time as the generator - we want the cost function to be as good as possible
-		\item But we can't train it to be \textit{too good} since the gradients computed with KL will vanish
-		\item Why? Because distributions have low dimensional support and KL does to infinity when Q is zero
-		\item Requires careful tuning of hyperparameters and has the "it works but we don't know why" philosophy
-		\item Difficult to train
-		\item Loss doesn't correlate with image quality
-	\end{itemize}
-\end{frame}
 
 %------------------------------------------------
 \begin{frame}
 	\frametitle{Wasserstein (Earth mover) distance}
 	\begin{exampleblock}{EM distance}
 	\[
-		W(\mathbb{P}, \mathbb{Q}) = \inf_{\gamma \in \Pi(\mathbb{P}, \mathbb{Q})} {\mathbb{E}_{(x, y) \sim \gamma}} \big[ \lvert \lvert x - y \lvert \lvert \big]
+		W(\mathbb{P}, \mathbb{Q}) = \inf_{\gamma \in \Pi(\mathbb{P}, \mathbb{Q})} {\mathbb{E}_{(x, y) \sim \gamma}} \left[ \lvert \lvert x - y \lvert \lvert \right]
 	\]
 \end{exampleblock}
 	\begin{itemize}
 		\item Distance function that takes into account underlying geometry of the distributions
 		\item Minimum cost of turning a pile of dirt into the other
 		\item Proposed by Arjovsky \textit{et al.} as improvement to original GAN training - Wasserstein GAN
+		\item Intractable
 	\end{itemize}
+\end{frame}
+\subsection{Comparison on toy example}
+%------------------------------------------------
+\begin{frame}
+	\frametitle{Learning distributions - toy example}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=\textwidth]{data_gan_manifold.png}
+	\end{figure}
+\footnotetext{MILA DLSS: \url{https://drive.google.com/file/d/0B_wzP_JlVFcKQ21udGpTSkh0aVk/view}}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+	\frametitle{Learning distributions - toy example}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=\textwidth]{data_gan_manifold_zoom.png}
+	\end{figure}
+	\footnotetext{MILA DLSS: \url{https://drive.google.com/file/d/0B_wzP_JlVFcKQ21udGpTSkh0aVk/view}}
 \end{frame}
 
 %------------------------------------------------
@@ -546,9 +547,182 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 	\end{itemize}
 	\end{column}
 	\end{columns}
-	\footnotetext{http://www.alexirpan.com/2017/02/22/wasserstein-gan.html}
+	\footnotetext{\url{http://www.alexirpan.com/2017/02/22/wasserstein-gan.html}}
+\end{frame}
+%------------------------------------------------
+\begin{frame}
+	\frametitle{JS and EM distance w.r.t. $\theta$ }
+	\begin{columns}
+	\begin{column}{0.5\textwidth}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=\textwidth]{JS_value.png}
+	\end{figure}
+	\pause
+	\begin{itemize}
+		\item JS-divergence gradient is zero
+	\end{itemize}
+	\end{column}
+	\begin{column}{0.5\textwidth}  %%<--- here
+	\pause
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=\textwidth]{wasserstein_value.png}
+	\end{figure}
+	\pause
+	\begin{itemize}
+		\item Wasserstein gradient is constant
+	\end{itemize}
+	\end{column}
+	\end{columns}
+\end{frame}
+%------------------------------------------------
+\begin{frame}
+	\frametitle{Gradients between two gaussian distributions}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.9\textwidth]{gan_gradients_gauss.png}
+	\end{figure}
 \end{frame}
 
+\subsection{Short history of training GANs}
+%------------------------------------------------
+\begin{frame}
+	\frametitle{Short history of training GANs}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.9\textwidth]{original_paper.png}
+	\end{figure}
+	\begin{exampleblock}{GAN Value function}
+	\[
+		\min_G \max_D \mathbb{E}_{x \sim \mathbb{P}_r} \left[ \log D(x) \right] + \mathbb{E}_{x \sim \mathcal{Z}} \left[ \log (1 -  D(G(z)))  \right] 
+	\]
+	\end{exampleblock}
+	\begin{itemize}
+		\item Discriminator output is probability of image being real (1) or fake (0)
+	\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}
+	\frametitle{Short history of training GANs}
+	\begin{itemize}
+		\item For G fixed, the optimal discriminator $D^*$ is:
+	\end{itemize}
+	\[
+		D_G^*(\bm{x}) = \frac{p_r(\bm{x})}{p_r(\bm{x}) + p_g(\bm{x})}
+	\]
+	\pause
+	\begin{itemize}
+		\item Under an optimal discriminator, generator minimizes the JS-divergence 
+	\end{itemize}
+	\[
+		JS(\mathbb{P}_r \vert \vert \mathbb{P}_g) &= \frac{1}{2}KL\left(\mathbb{P}_r \left|\left|\frac{\mathbb{P}_r + \mathbb{P}_g}{2}\right) + \frac{1}{2}KL\left(\mathbb{P}_g \left| \left| \frac{\mathbb{P}_r + \mathbb{P}_g}{2}\right)
+	\]
+	\begin{itemize}[<+(1)->]
+		\item We want the discriminator (cost function) to be as good as possible
+		\item With JS-divergence good discriminator leads to vanishing gradients
+		\item Disciminator should be good but not too good?
+		\item Bag of tricks 
+		\item Other small problem - \textbf{Value of loss function doesn't tell us anything!}
+	\end{itemize}
+	\newline
+\end{frame}
+\subsection{Tricks for training GANs}
+%------------------------------------------------
+\begin{frame}
+	\frametitle{Trick - adding noise}
+	\begin{itemize}
+		\item Trick - adding noise
+		\item Matching the noise corresponds to matching the underlying distributions
+	\end{itemize}
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[width=0.8\textwidth]{instance_noise.png}
+		\end{figure}
+\footnotetext{http://www.inference.vc/instance-noise-a-trick-for-stabilising-gan-training/}
+\end{frame}
+%------------------------------------------------
+\begin{frame}
+	\frametitle{Trick - cherrypicking architecture}
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[width=\textwidth]{original_GAN_guidelines.png}
+		\end{figure}
+		\pause
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[width=0.65\textwidth]{original_GAN_results.png}
+		\end{figure}
+\end{frame}
+\begin{frame}
+	\frametitle{Trick - cherrypicking architecture}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.9\textwidth]{gan_guidelines.png}
+	\end{figure}
+	\pause
+	\begin{itemize}[<+->]
+		\item Chintala reports that they had model generator \footnotemark
+		\item No way to tell how well GAN is doing
+		\item Loss doesn't correlate with image quality
+		\item Very unstable
+	\end{itemize}
+	\footnotetext{https://www.youtube.com/watch?v=X1mUN6dD8uE&t=795s}
+\end{frame}
+%------------------------------------------------
+\begin{frame}
+	\frametitle{Trick - not training the discriminator until convergence}
+	\begin{itemize}[<+->]
+		\item Making sure the discriminator is not "too far ahead" of generator
+		\item Each step trains the generator once and discriminator once
+		\item Many alternative training plans with questionable efficiency
+		\item Has a nice side effect of speeding up the training time
+	\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}
+	\frametitle{Short history of training GANs}
+	\begin{exampleblock}{EM distance}
+	\[
+		W(\mathbb{P}_r, \mathbb{P}_g) = \inf_{\gamma \in \Pi(\mathbb{P}_r, \mathbb{P}_g)} {\mathbb{E}_{(x, y) \sim \gamma}} \left[ \lvert \lvert x - y \lvert \lvert \right]
+	\]
+	\end{exampleblock}
+	\begin{itemize}
+		\item How to compute the infimum?
+		\item 1000 page book on Optimal Transport \footnotemark
+		\item Kantorovich-Rubinstein duality
+	\end{itemize}
+	\begin{exampleblock}{Kantorovich-Rubinstein duality}
+	\[
+		K \cdot W(\mathbb{P}_r, \mathbb{P}_g) = \sup_{\Vert f \Vert_L \leq K} \mathbb{E}_{x \sim \mathbb{P}_r} \left[ f(x) \right] - \mathbb{E}_{x \sim \mathbb{P}_g} \left[ f(x) \right]
+	\]
+	\end{exampleblock}
+	\begin{itemize}
+		\item Supremum is the norm over all K-Lipschitz functions $f: \mathcal{X} \rightarrow \mathbb{R} $
+	\end{itemize}
+	\footnotetext{http://cedricvillani.org/wp-content/uploads/2012/08/preprint-1.pdf}
+\end{frame}
+\begin{frame}
+	\frametitle{Short history of training GANs}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.9\textwidth]{wgan_paper.png}
+	\end{figure}
+	\begin{exampleblock}{WGAN Value function}
+	\[
+		\min_G \max_{D \in \mathcal{D}} \mathbb{E}_{x \sim \mathbb{P}_r} \left[ D(x) \right] - \mathbb{E}_{x \sim \mathcal{Z}} \left[ D(G(z))  \right] 
+	\]
+	\end{exampleblock}
+	\begin{itemize}
+		\item 
+	\end{itemize}
+\end{frame}
+
+
+
+\section{Game theory perspective}
 %------------------------------------------------
 \begin{frame}
 	\frametitle{Game theory perspective}
@@ -567,13 +741,19 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 		\item KL-divergence, when parameters are right, seems to produce much better looking samples?
 	\end{itemize}
 \end{frame}
-
 %------------------------------------------------
 \begin{frame}
-	\frametitle{A common pattern}
+	\frametitle{Cost function}
 	\begin{itemize}
-		\item
+		\item MSE needs to average over all possibilities and choose a single answer
+		\item Square error - a simple parabola, is it sufficient?
 	\end{itemize}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=\textwidth]{mse_vs_adversarial.png}
+	\end{figure}
+	\footnotetext{Ian J. Goodfellow:
+NIPS 2016 Tutorial: Generative Adversarial Networks}
 \end{frame}
 %------------------------------------------------
 \begin{frame}
@@ -591,11 +771,12 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 \begin{frame}
 	\frametitle{Problems with GANs}
 	\begin{itemize}
+		\item Mode collapse
 		\item Problems with counting
 		\item High level structure
 		\item Perspective
 		\item Sequential data
-		\item 
+		\item Are GANs overfitting? How to measure it?
 	\end{itemize}
 \end{frame}
 
@@ -611,6 +792,15 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 		\item Where does the neural network end the cost function begin?
 		\item We optimize computational graph, but it's constituents have different semantics
 		\item How is the cost function different from a neural network layer?
+	\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}
+	\frametitle{Recent innovations}
+	\begin{itemize}
+		\item Sepp Hochreiter - proof of GAN convergence
+		\item Multiplayer GAN? Exchanging discriminators?
 	\end{itemize}
 \end{frame}
 
