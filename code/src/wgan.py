@@ -167,8 +167,8 @@ class WGAN:
         """
         ##################################################################
 
-        TODO: Devise an updating scheme for the critic and the generator. Hint: the critic should always be trained more
-        than the generator.
+        TODO: Devise an updating scheme for the critic and the generator. 
+        Hint: the critic should always be trained more than the generator.
         
         YOUR CODE BEGIN.
         
