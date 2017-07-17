@@ -27,22 +27,25 @@ The code will look for images recursively in the `code/data/lfw-deepfunnelled` d
 
 #### Step 2. - Fill in the missing parts of the code!
 
-Starting point is the `main.py` file, which sets up and trains your mode, but the only file you need to edit is `code/src/wgan.py`.
+Starting point is the `main.py` file, which sets up and trains your model, but the only file you need to edit is `code/src/wgan.py`.
 
 There are three things you need to implement: 
 * Cost functions for the critic and the generator
 * Optimizers for the critic and the generator
 * Training regime
 
-Place for your code is marked in the file and, although you don't need to touch anything else to make it work, feel free to experiment and adjust the code to your liking!
+Network architectures for the generators and the critics are already provided. 
+Place for your code is marked in the file. 
+Although you don't need to touch anything else to make it work, feel free to experiment and adjust the code to your liking!
 
 #### Step 3. - Train your model!
 
 Run the main.py and check your model performance in TensorBoard!
+
+Run the `tensorboard --logdir=log --reload_interval=1` from your `code/` directory and access the `localhost:6006` address from your browser.
 You'll be able to track values of losses, generated images as well as the distribution of weights and gradients of all the parameters in your network.
 
-For reference, `i5-4200U CPU @ 1.60GHz` trains the basic shape of the face within first 200 iterations! 
-Feel free to scale the model or the images up if you have a powerful GPU.
+For reference, `Intel i5-4200U CPU @ 1.60GHz` trains the basic shape of the face within first 200 iterations!
 
 #### Step 4.
 ???
