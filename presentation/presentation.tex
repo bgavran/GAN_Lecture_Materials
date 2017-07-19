@@ -168,7 +168,8 @@ This, and the variations that are now being proposed is the most interesting ide
 	\centering
 	\includegraphics[width=\textwidth]{dcgan_both.png}
 \end{figure}
-	\begin{itemize}
+	\pause
+	\begin{itemize}[<+->]
 		\item Instead of using a standard fixed cost function, we \textit{learn} the cost function with the neural network
 		\item We alternate between training different parts of the network
 		\item Forger and the police
@@ -886,7 +887,7 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 %------------------------------------------------
 \begin{frame}
 	\frametitle{Game theory perspective}
-	\begin{itemize}
+	\begin{itemize}[<+->]
 		\item Two neural networks are playing a zero-sum game
 		\item Nash equilibrium
 		\item Goal - both players adopting strategies where any deviations would be disadvantageous
@@ -931,6 +932,15 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 \end{frame}
 %------------------------------------------------
 \begin{frame}
+	\frametitle{Interactive GAN}
+	\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{interactive_gan.jpg}
+	\end{figure}
+	\href{{https://www.youtube.com/watch?v=9c4z6YsBGQ0}}{\beamergotobutton{Interactive GAN}}
+\end{frame}
+%------------------------------------------------
+\begin{frame}
 	\frametitle{Style Transfer}
 	\begin{figure}[h!]
 	\centering
@@ -944,6 +954,7 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 	\end{figure}
 	\pause[8]
 	\href{https://www.youtube.com/watch?v=9reHvktowLY}{\beamergotobutton{CycleGAN in action}}
+	\href{https://twitter.com/quasimondo/status/880005499084734465}{\beamergotobutton{Creepy CycleGAN}}
 \end{frame}
 %------------------------------------------------
 \begin{frame}
@@ -981,10 +992,10 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 	\begin{itemize}[<+->]
 		\item How to evaluate GANs?
 		\item No way to tell how good of an approximation of EM distance the critic really is
-		\item Are GANs overfitting? How to measure it?
 		\item Mode collapse
-		\item Problems with counting
 		\item Multi-task solving?
+		\item Are GANs overfitting? How to measure it?
+		\item Problems with counting
 		\item Perspective
 		\item High level structure
 		\item Sequential data
@@ -1022,24 +1033,26 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 		\item Understanding models with multiple optimization criteria?
 	\end{itemize}
 
+	\pause[6]
 	\noindent\rule{8cm}{0.4pt}
 	\begin{itemize}[<+->]
 		\item Sepp Hochreiter - proof of GAN convergence
-		\item Multiplayer GAN? 
+		\item \textit{Multiplayer} GAN? 
 		\item Exchanging discriminators?
 		\item Cramer GAN - new statistical distance?
+		\item Many, many more papers...
 	\end{itemize}
 \end{frame}
 %------------------------------------------------
 \begin{frame}
 \frametitle{History of great ideas in deep learning}
 
-\begin{itemize}
+\begin{itemize}[<+(1)->]
 	\item Need for feature engineering before applying ML model!
-	\item Oh, neural networks can do that. Too bad we still have to figure out which cost function to use...
-	\item Oh, GAN can figure out the cost function by itself! Too bad we still have to find the correct way to do the optimization...
-	\item Oh, we can let the NN optimize itself...?
-	\item Learning to learn by gradient descent by gradient descent
+	\item \textbf{Oh, neural networks can do that.} Too bad we still have to figure out which cost function to use...
+	\item \textbf{Oh, GANs can figure out the cost function by themselves!} Too bad we still have to find the correct way to do the optimization...
+	\item \textbf{Oh, the neural network can optimize itself...?}
+	\item Learning to learn 
 \end{itemize}
 
 \end{frame}
