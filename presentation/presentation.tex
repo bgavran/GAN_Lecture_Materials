@@ -803,10 +803,10 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 			\item Gradient penalty
 		\end{itemize}
 		\begin{equation*}
-			\onslide<7->{\mathbb{E}_{\bm{\hat{x}} \sim \mathbb{P}_{\bm{\hat{x}}}} \left[ \left(} \onslide<6->{\Vert} \nabla_{\bm{\hat{x}}} D(\bm{\hat{x}}) \onslide<6->{\Vert_2}  \onslide<7>{ - 1 \right)^2  \right]}
+			\onslide<8->{\mathbb{E}_{\bm{\hat{x}} \sim \mathbb{P}_{\bm{\hat{x}}}} \left[ \left(} \onslide<7->{\Vert} \onslide<6->{\nabla_{\bm{\hat{x}}}} D(\bm{\hat{x}}) \onslide<7->{\Vert_2}  \onslide<8->{ - 1 \right)^2  \right]}
 		\end{equation*}
 	\end{column}
-	\pause[4]
+	\pause[5]
 	\begin{column}{0.5\textwidth}  %%<--- here
 		\begin{figure}[h!]
 			\centering
@@ -826,12 +826,12 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 	\begin{exampleblock}{WGAN-GP Value function}
 	\begin{gather*}
 		\min_G \max_{D}
-		\mathbb{E}_{\bm{x} \sim \mathbb{P}_r} \Left[ D(\bm{x}) \Right] - 
-		\mathbb{E}_{\bm{z} \sim \mathcal{Z}} \Left[ D(G(\bm{z}))  \Right] + 
-		\lambda \mathbb{E}_{\bm{\hat{x}} \sim \mathbb{P}_{\bm{\hat{x}}}} \left[ \left( \Vert \nabla_{\bm{\hat{x}}} D(\bm{\hat{x}}) \Vert_2  - 1 \right)^2  \right]
+		\mathbb{E}_{\bm{x} \sim \mathbb{P}_r} \Left[ D(\bm{x}) \Right]
+		- \mathbb{E}_{\bm{z} \sim \mathcal{Z}} \Left[ D(G(\bm{z}))  \Right] 
+		\onslide<2->{+ \lambda \mathbb{E}_{\bm{\hat{x}} \sim \mathbb{P}_{\bm{\hat{x}}}} \left[ \left( \Vert \nabla_{\bm{\hat{x}}} D(\bm{\hat{x}}) \Vert_2  - 1 \right)^2  \right]}
 	\end{gather*}
 	\end{exampleblock}
-	\begin{itemize}[<+->]
+	\begin{itemize}[<+(1)->]
 		\item Enforcing the Lipschitz constraint with a gradient penalty regularization term
 		\item Improvements?
 	\end{itemize}
