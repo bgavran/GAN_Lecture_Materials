@@ -81,6 +81,7 @@
 \usepackage{amsmath}
 \usepackage{mathtools}
 \usepackage{pdfpages}
+\usepackage{eso-pic}
 \usepackage{bm}
 \usepackage[utf8]{inputenc}
 
@@ -353,6 +354,21 @@ This, and the variations that are now being proposed is the most interesting ide
 	\end{enumerate}
 	\end{block}
 \end{frame}
+%------------------------------------------------
+\begin{frame}
+	\frametitle{Cost function}
+	\begin{itemize}
+		\item MSE needs to average over all possibilities and choose a single answer
+		\item Square error - a simple parabola, is it sufficient?
+	\end{itemize}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics<1>[width=\textwidth]{predict_frame.png}
+		\includegraphics<2->[width=\textwidth]{mse_vs_adversarial.png}
+	\end{figure}
+	\footnotetext{Ian J. Goodfellow:
+NIPS 2016 Tutorial: Generative Adversarial Networks}
+\end{frame}
 
 %------------------------------------------------
 \begin{frame}
@@ -367,7 +383,7 @@ This, and the variations that are now being proposed is the most interesting ide
 %------------------------------------------------
 \begin{frame}
 	\frametitle{The great idea}
-	\begin{itemize}
+	\begin{itemize}[<+->]
 		\item Neural network is a computational graph!
 		\item Cost function \textit{is a part of} that computational graph
 		\item The great idea - why don't we put a neural network as the cost function?
@@ -384,16 +400,16 @@ This, and the variations that are now being proposed is the most interesting ide
 	\frametitle{Training regime}
 	\begin{figure}[h!]
 	\centering
-	\includegraphics<1>[width=\textwidth]{GAN_optimization_1.png}
-	\includegraphics<2>[width=\textwidth]{GAN_optimization_2.png}
-	\includegraphics<3>[width=\textwidth]{GAN_optimization_3.png}
-	\includegraphics<4>[width=\textwidth]{GAN_optimization_4.png}
-	\includegraphics<5>[width=\textwidth]{GAN_optimization_5.png}
-	\includegraphics<6->[width=\textwidth]{GAN_optimization_6.png}
+	\includegraphics<1>[width=\textwidth]{gan_optimization/GAN_optimization_1.png}
+	\includegraphics<2>[width=\textwidth]{gan_optimization/GAN_optimization_2.png}
+	\includegraphics<3>[width=\textwidth]{gan_optimization/GAN_optimization_3.png}
+	\includegraphics<4>[width=\textwidth]{gan_optimization/GAN_optimization_4.png}
+	\includegraphics<5>[width=\textwidth]{gan_optimization/GAN_optimization_5.png}
+	\includegraphics<6->[width=\textwidth]{gan_optimization/GAN_optimization_6.png}
 	\end{figure}
 	\pause[6]
 	\begin{itemize}
-		\item Two-step optimization process
+		\item Two-step optimization optimization process
 	\end{itemize}
 \end{frame}
 
@@ -434,7 +450,7 @@ This, and the variations that are now being proposed is the most interesting ide
 \end{frame}
 %------------------------------------------------
 \begin{frame}
-	\frametitle{Kullback-Leibler divergence}
+	\frametitle{Kullback-Leibler and Jensen Shannon divergence}
 	\begin{exampleblock}{KL-divergence}
 	\[
 		KL(\mathbb{P} \vert \vert \mathbb{Q}) = \mathbb{E}_{x \sim \mathbb{P}} \left[ \log \frac{P(x)}{Q(x)} \right] \pause = \int_{x} \log \frac{P(x)}{Q(x)} P(x) dx
@@ -443,31 +459,25 @@ This, and the variations that are now being proposed is the most interesting ide
 \pause
 	\begin{itemize}[<+->]
 		\item Doesn't satisfy triangle inequality and symmetry
-		\item Non-negative and unbounded
+		\item Origins in information theory
 		\item Information gained when revising from prior Q to posterior P
 
 	\end{itemize}
-\end{frame}
-%------------------------------------------------
-\begin{frame}
-	\frametitle{Jensen-Shannon divergence}
+	\pause[6]
 	\begin{exampleblock}{JS-divergence}
 	\[
 		\mathbb{M} &= \frac{1}{2}(\mathbb{P} + \mathbb{Q})
 	\]
-		\pause
+	\pause[7]
 	\[
 		JS(\mathbb{P} \vert \vert \mathbb{Q}) &= \frac{1}{2}KL(\mathbb{P} \vert \vert \mathbb{M}) + \frac{1}{2}KL(\mathbb{Q} \vert \vert \mathbb{M})
 	\]
 \end{exampleblock}
-	\pause
-	\begin{itemize}
-		\item Based on KL-divergence, with notable difference
+	\begin{itemize}[<+(1)->]
 		\item Symmetric and bounded
 		\item Original GAN paper minimizes JS-divergence
 	\end{itemize}
 \end{frame}
-
 
 %------------------------------------------------
 \begin{frame}
@@ -477,7 +487,7 @@ This, and the variations that are now being proposed is the most interesting ide
 		W(\mathbb{P}, \mathbb{Q}) = \inf_{\gamma \in \Pi(\mathbb{P}, \mathbb{Q})} {\mathbb{E}_{(x, y) \sim \gamma}} \left[ \lvert \lvert x - y \lvert \lvert \right]
 	\]
 \end{exampleblock}
-	\begin{itemize}
+	\begin{itemize}[<+->]
 		\item Distance function that takes into account underlying geometry of the distributions
 		\item Minimum cost of turning a pile of dirt into the other
 		\item Proposed by Arjovsky \textit{et al.} as improvement to original GAN training - Wasserstein GAN
@@ -622,14 +632,13 @@ This, and the variations that are now being proposed is the most interesting ide
 %------------------------------------------------
 \begin{frame}
 	\frametitle{Trick - adding noise}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.8\textwidth]{instance_noise.png}
+	\end{figure}
 	\begin{itemize}
-		\item Trick - adding noise
 		\item Matching the noise corresponds to matching the underlying distributions
 	\end{itemize}
-		\begin{figure}[h!]
-			\centering
-			\includegraphics[width=0.8\textwidth]{instance_noise.png}
-		\end{figure}
 		\footnotetext{\url{http://www.inference.vc/instance-noise-a-trick-for-stabilising-gan-training/}}
 \end{frame}
 %------------------------------------------------
@@ -745,6 +754,7 @@ This, and the variations that are now being proposed is the most interesting ide
 		$\mathcal{D}$ - set of all K-Lipschitz functions
 	\end{center}
 	\end{exampleblock}
+	\pause
 	\begin{itemize}
 		\item Open question - how to effectively enforce the Lipschitz constraint?
 	\end{itemize}
@@ -753,15 +763,16 @@ This, and the variations that are now being proposed is the most interesting ide
 %------------------------------------------------
 \begin{frame}
 	\frametitle{Method \#1 - Weight Clipping}
-	\begin{itemize}
+	\begin{itemize}[<+->]
 		\item After optimization step, clip all weights to $ \big[{-c}, c \big] $
 		\item Results in critic being a subset of K-Lipschitz functions, where K is a function of c and the critic's architecture
 	\end{itemize}
+	\pause
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[width=0.9\textwidth]{wgan_clipping_vs_norm.png}
 	\end{figure}
-	\begin{itemize}
+	\begin{itemize}[<+->]
 		\item Works! But...
 		\item Capacity underuse
 		\item Exploding and vanishing gradients
@@ -773,7 +784,7 @@ This, and the variations that are now being proposed is the most interesting ide
 	\begin{columns}
 	\begin{column}{0.5\textwidth}
 		\begin{itemize}[<+->]
-			\item Property of the optimal WGAN critic
+			\item Property of the optimal WGAN critic $ \vert f(x) - f(y) \vert \leq \vert x - y \vert $
 			\item Optimal WGAN critic has gradient norm 1
 			\item Add a regularization term to the WGAN value function
 			\item Sampling along straight lines
@@ -790,9 +801,9 @@ This, and the variations that are now being proposed is the most interesting ide
 		\begin{itemize}
 			\item Gradient penalty
 		\end{itemize}
-		\[
-			\mathbb{E}_{\bm{\hat{x}} \sim \mathbb{P}_{\bm{\hat{x}}}} \left[ \left( \Vert \nabla_{\bm{\hat{x}}} D(\bm{\hat{x}}) \Vert_2  - 1 \right)^2  \right]
-		\]
+		\begin{equation*}
+			\onslide<7->{\mathbb{E}_{\bm{\hat{x}} \sim \mathbb{P}_{\bm{\hat{x}}}} \left[ \left(} \onslide<6->{\Vert} \nabla_{\bm{\hat{x}}} D(\bm{\hat{x}}) \onslide<6->{\Vert_2}  \onslide<7>{ - 1 \right)^2  \right]}
+		\end{equation*}
 	\end{column}
 	\pause[4]
 	\begin{column}{0.5\textwidth}  %%<--- here
@@ -819,6 +830,10 @@ This, and the variations that are now being proposed is the most interesting ide
 		\lambda \mathbb{E}_{\bm{\hat{x}} \sim \mathbb{P}_{\bm{\hat{x}}}} \left[ \left( \Vert \nabla_{\bm{\hat{x}}} D(\bm{\hat{x}}) \Vert_2  - 1 \right)^2  \right]
 	\end{gather*}
 	\end{exampleblock}
+	\begin{itemize}[<+->]
+		\item Enforcing the Lipschitz constraint with a gradient penalty regularization term
+		\item Improvements?
+	\end{itemize}
 \end{frame}
 
 %------------------------------------------------
@@ -834,21 +849,6 @@ This, and the variations that are now being proposed is the most interesting ide
 		\item Theoretical and empirical data
 		\item No need for tricks 
 	\end{itemize}
-\end{frame}
-%------------------------------------------------
-\begin{frame}
-	\frametitle{Cost function}
-	\begin{itemize}
-		\item MSE needs to average over all possibilities and choose a single answer
-		\item Square error - a simple parabola, is it sufficient?
-	\end{itemize}
-	\begin{figure}[h!]
-		\centering
-		\includegraphics<1>[width=\textwidth]{predict_frame.png}
-		\includegraphics<2->[width=\textwidth]{mse_vs_adversarial.png}
-	\end{figure}
-	\footnotetext{Ian J. Goodfellow:
-NIPS 2016 Tutorial: Generative Adversarial Networks}
 \end{frame}
 
 %------------------------------------------------
@@ -880,7 +880,6 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 		\item \textbf{Robust to changes in model architecture}
 	\end{itemize}
 \end{frame}
-
 %------------------------------------------------
 
 \section{Game theory perspective}
@@ -895,18 +894,17 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 	\end{itemize}
 \end{frame}
 
-%------------------------------------------------
-\begin{frame}
-	\frametitle{EMD - drawbacks}
-	\begin{itemize}
-		\item Can't really compare critics
-		\item Can't tell how how close to EM distance our estimate really is
-		\item KL-divergence, when parameters are right, seems to produce much better looking samples?
-	\end{itemize}
-\end{frame}
 
 \section{GANs - cool stuff}
 %------------------------------------------------
+\begin{frame}
+	\begin{center}
+	\Huge{Cool things you can do with GANs}
+	\end{center}
+\end{frame}
+
+%------------------------------------------------
+
 \begin{frame}
 	\frametitle{Latent space arithmetic}
 	\begin{figure}[h!]
@@ -936,8 +934,15 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 	\frametitle{Style Transfer}
 	\begin{figure}[h!]
 	\centering
-	\includegraphics[width=\textwidth]{cyclegan_style_transfer.jpg}
+	\includegraphics<1>[width=\textwidth]{cycle_gan/cg_1.png}
+	\includegraphics<2>[width=\textwidth]{cycle_gan/cg_2.png}
+	\includegraphics<3>[width=\textwidth]{cycle_gan/cg_3.png}
+	\includegraphics<4>[width=\textwidth]{cycle_gan/cg_4.png}
+	\includegraphics<5>[width=\textwidth]{cycle_gan/cg_5.png}
+	\includegraphics<6>[width=\textwidth]{cycle_gan/cg_6.png}
+	\includegraphics<7->[width=\textwidth]{cycle_gan/cyclegan_style_transfer.jpg}
 	\end{figure}
+	\pause[8]
 	\href{https://www.youtube.com/watch?v=9reHvktowLY}{\beamergotobutton{CycleGAN in action}}
 \end{frame}
 %------------------------------------------------
@@ -950,9 +955,18 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 \end{frame}
 %------------------------------------------------
 \begin{frame}
+\frametitle{Heuristics for training WGANs}
+\begin{itemize}
+	\item Make sure your critic is "ahead of" the generator!
+	\item 5-10x more than the generator reduces oscillatory behaviour
+	\item Should work without any hyperparameter tuning
+\end{itemize}
+\end{frame}
+%------------------------------------------------
+\begin{frame}
 \frametitle{Perspectives}
 \begin{itemize}
-	\item Distribution matching
+	\item Matching distributions
 	\item Neural network as a cost function
 	\item Modular training
 	\item Two player minimax game
@@ -964,15 +978,16 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 \section{Problems and open questions}
 \begin{frame}
 	\frametitle{Problems with GANs}
-	\begin{itemize}
+	\begin{itemize}[<+->]
 		\item How to evaluate GANs?
+		\item No way to tell how good of an approximation of EM distance the critic really is
+		\item Are GANs overfitting? How to measure it?
 		\item Mode collapse
 		\item Problems with counting
-		\item High level structure
-		\item Perspective
-		\item Sequential data
 		\item Multi-task solving?
-		\item Are GANs overfitting? How to measure it?
+		\item Perspective
+		\item High level structure
+		\item Sequential data
 	\end{itemize}
 \end{frame}
 %------------------------------------------------
@@ -998,28 +1013,23 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 
 %------------------------------------------------
 \begin{frame}
-	\frametitle{Open questions}
-	\begin{itemize}
+	\frametitle{Future of GANs}
+	\begin{itemize}[<+->]
 		\item Which statistical distance to use?
 		\item Best training regime?
 		\item Convergence conditions?
 		\item Solving mode collapse?
-		\item Where does the neural network end the cost function begin?
-		\item We optimize computational graph, but it's constituents have different semantics
-		\item How is the cost function different from a neural network layer?
+		\item Understanding models with multiple optimization criteria?
 	\end{itemize}
-\end{frame}
 
-%------------------------------------------------
-\begin{frame}
-	\frametitle{Recent innovations}
-	\begin{itemize}
+	\noindent\rule{8cm}{0.4pt}
+	\begin{itemize}[<+->]
 		\item Sepp Hochreiter - proof of GAN convergence
-		\item Multiplayer GAN? Exchanging discriminators?
+		\item Multiplayer GAN? 
+		\item Exchanging discriminators?
 		\item Cramer GAN - new statistical distance?
 	\end{itemize}
 \end{frame}
-
 %------------------------------------------------
 \begin{frame}
 \frametitle{History of great ideas in deep learning}
@@ -1035,7 +1045,6 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 \end{frame}
 
 %------------------------------------------------
-
 
 \begin{frame}
 \Huge{\centerline{Thank you!}}
