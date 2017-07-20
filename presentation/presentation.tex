@@ -101,7 +101,15 @@ Petnica Summer School of Machine Learning\\ % Your institution for the title pag
 }
 \date{\today} % Date, can be changed to a custom date
 \graphicspath{{img/}}
+
 \begin{document}
+
+\begin{frame}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[height=0.9\textheight]{xkcd_ml.png}
+	\end{figure}
+\end{frame}
 
 \begin{frame}
 \titlepage % Print the title page as the first slide
@@ -120,31 +128,24 @@ Petnica Summer School of Machine Learning\\ % Your institution for the title pag
 \section{Meta} % Sections can be created in order to organize your presentation into discrete blocks, all sections and subsections are automatically printed in the table of contents as an overview of the talk
 %------------------------------------------------
 
-\begin{frame}
-\begin{columns}
-\begin{column}{0.5\textwidth}
-	\begin{itemize}[<+(1)->]
-		\item What is this talk about?
-		\item New idea
-		\item Nobody is still sure how it works
-		\item Compared to other ML models, we're still in early stages
-		\item Our understanding of it changes from week to week
-	\end{itemize}
-\end{column}
-\begin{column}{0.5\textwidth}
-	\begin{figure}[h!]
-		\centering
-		\includegraphics[width=0.8\textwidth]{xkcd_ml.png}
-	\end{figure}
-\end{column}
-\end{columns}
+\begin{frame} \frametitle{Meta}
+\begin{itemize}[<+->]
+	\item What is this talk about?
+	\item New idea
+\end{itemize}
 
-\pause[7]
+\pause[3]
 \begin{block}{Yann LeCun}
 "The most important one, in my opinion, is adversarial training (also called GAN for Generative Adversarial Networks).
 
 This, and the variations that are now being proposed is the most interesting idea in the last 10 years in ML, in my opinion.”
 \end{block}
+
+\begin{itemize}[<+(1)->]
+	\item Nobody is still sure how it works
+	\item Compared to other ML models, we're still in early stages
+	\item Our understanding of it changes from week to week
+\end{itemize}
 \end{frame}
 
 %------------------------------------------------
@@ -446,6 +447,10 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 		\item JS-divergence
 		\item Earth-mover distance (Wasserstein distance)
 		\item Total variation distance
+		\item Hellinger distance
+		\item Mahalanobis distance
+		\item Bhattacharyya distance
+		\item Energy distance
 		\item ...
 	\end{itemize}
 \end{frame}
@@ -994,7 +999,6 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 		\item No way to tell how good of an approximation of EM distance the critic really is
 		\item Mode collapse
 		\item Multi-task solving?
-		\item Are GANs overfitting? How to measure it?
 		\item Problems with counting
 		\item Perspective
 		\item High level structure
