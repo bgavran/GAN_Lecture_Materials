@@ -807,6 +807,7 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 		\begin{itemize}
 			\item Gradient penalty
 		\end{itemize}
+		\pause
 		\begin{equation*}
 			\onslide<8->{\mathbb{E}_{\bm{\hat{x}} \sim \mathbb{P}_{\bm{\hat{x}}}} \left[ \left(} \onslide<7->{\Vert} \onslide<6->{\nabla_{\bm{\hat{x}}}} D(\bm{\hat{x}}) \onslide<7->{\Vert_2}  \onslide<8->{ - 1 \right)^2  \right]}
 		\end{equation*}
@@ -960,6 +961,14 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 	\pause[8]
 	\href{https://www.youtube.com/watch?v=9reHvktowLY}{\beamergotobutton{CycleGAN in action}}
 	\href{https://twitter.com/quasimondo/status/880005499084734465}{\beamergotobutton{Creepy CycleGAN}}
+\end{frame}
+%------------------------------------------------
+\begin{frame}
+	\frametitle{Failure case}
+	\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.9\textwidth]{cycle_gan_failure.png}
+	\end{figure}
 \end{frame}
 %------------------------------------------------
 \begin{frame}
