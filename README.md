@@ -17,7 +17,7 @@ The data loading pipeline and most of the boilerplate code is already written.
 
 Your task is to download the dataset and fill in the missing parts of the code.
 
-You should be able to train a rudimentary WGAN-GP with fully connetcted generator and critic on a low resolution Faces dataset in a matter of minutes, even on the CPU of a low-end PC.
+You should be able to train a rudimentary WGAN-GP with fully connected generator and critic on a low resolution Faces dataset in a matter of minutes, even on the CPU of a low-end PC.
 
 
 ---
