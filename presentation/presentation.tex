@@ -90,12 +90,12 @@
 %	TITLE PAGE
 %----------------------------------------------------------------------------------------
 
-\title[GAN]{Generative Adversarial Networks} % The short title appears at the bottom of every slide, the full title is only on the title page
+\title[Generative Adversarial Networks]{Generative Adversarial Networks} % The short title appears at the bottom of every slide, the full title is only on the title page
 
 \author{Bruno Gavranović} % Your name
-\institute[PSIML2017] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
+\institute[FER] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
 {
-Petnica Summer School of Machine Learning\\ % Your institution for the title page
+IRB Seminar \\ % Your institution for the title page
 \medskip
 \textit{bruno.gavranovic@fer.hr} % Your email address
 }
@@ -163,7 +163,7 @@ This, and the variations that are now being proposed is the most interesting ide
 \begin{frame}
 	\frametitle{GAN: Just tell me what it is}
 	\begin{itemize}
-		\item Generative machine learning model in which two neural networks are competing against each other
+		\item Unsupervised generative machine learning model in which two neural networks are competing against each other
 	\end{itemize}
 \begin{figure}[h!]
 	\centering
@@ -218,6 +218,12 @@ This, and the variations that are now being proposed is the most interesting ide
 	\includegraphics[width=0.8\textwidth]{4k_black_woman.jpg}
 \end{figure}
 \end{frame}
+
+\begin{frame}[c]{ }
+\centering
+\href{https://www.youtube.com/watch?v=XOxxPcy5Gr4}{\beamergotobutton{Are you ready?}}
+\end{frame}
+
 %------------------------------------------------
 \begin{frame}
 \frametitle{What is this talk about?}
@@ -287,74 +293,41 @@ This, and the variations that are now being proposed is the most interesting ide
 
 \section{Comparison with autoencoders}
 
-\begin{frame}
-\frametitle{First attempt}
-\begin{columns}
-\begin{column}{0.5\textwidth}
-	\begin{itemize}[<+->]
-		\item How to match the distributions?
-		\item Autoencoder as an example
-		\item Network decomposition into basic building blocks
-		\item Tools for thinking about neural networks
-	\end{itemize}
-\end{column}
-\begin{column}{0.5\textwidth}  
-	\begin{figure}[h!]
-		\centering
-		\includegraphics[width=0.8\textwidth]{first_attempt_gan.png}
-	\end{figure}
-\end{column}
-\end{columns}
-
-
-\end{frame}
-
 %------------------------------------------------
 
 \begin{frame}
 \frametitle{Autoencoder}
 \begin{columns}
 \begin{column}{0.5\textwidth}
-\begin{itemize}
+\begin{itemize}[<+->]
+	\item How to match the distributions?
+	\item Autoencoder as an example
 	\item Recreation of samples from the real distribution
-	\item Encoding the images into the bottleneck $\theta$
 	\item Implicitly training the network to extract useful features
 \end{itemize}
-\end{column}
-\begin{column}{0.5\textwidth}
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width=0.8\textwidth]{autoencoder_attempt.png}
-\end{figure}
-\end{column}
-\end{columns}
-
-\end{frame}
-\subsection{Computational graph perspective}
-
-%------------------------------------------------
-\begin{frame}
-	\begin{columns}
-	\begin{column}{0.3\textwidth}
-		\includegraphics[width=\textwidth]{autoencoder_bad_diagram.png}
-	\end{column}
-	\pause
-	\begin{column}{0.33\textwidth}
-		\includegraphics[width=\textwidth]{sq_diff.png}
-	\end{column}
-	\pause
-	\begin{column}{0.34\textwidth}
-		\includegraphics[width=0.8\textwidth]{sq_diff_all.png}
-	\end{column}
-	\end{columns}
-	\pause[4]
-	\begin{block}{Things to note}
+	\begin{block}{Things to note}<5->
 	\begin{enumerate}
+		\item Cost function is a part of the computational graph
 		\item Cost function is not parametrized (it's fixed)
 		\item We train the network with just one cost function
 		\item Weight freezing and sharing is fixed throughout the training
 	\end{enumerate}
 	\end{block}
+\end{column}
+\begin{column}{0.5\textwidth}
+\begin{figure}[h!]
+	\centering
+	\includegraphics<1>[width=0.8\textwidth]{first_attempt_gan.png}
+	\includegraphics<2>[width=0.8\textwidth]{autoencoder_attempt.png}
+	\includegraphics<3>[width=0.8\textwidth]{autoencoder_attempt.png}
+	\includegraphics<4>[width=0.8\textwidth]{autoencoder_attempt.png}
+	\includegraphics<5>[width=0.8\textwidth]{autoencoder_attempt.png}
+	\includegraphics<6>[width=0.8\textwidth]{autoencoder_bad_diagram.png}
+	\includegraphics<7->[width=0.8\textwidth]{autoencoder_attempt.png}
+\end{figure}
+\end{column}
+\end{columns}
+
 \end{frame}
 %------------------------------------------------
 \begin{frame}
@@ -371,20 +344,10 @@ This, and the variations that are now being proposed is the most interesting ide
 	\footnotetext{Ian J. Goodfellow:
 NIPS 2016 Tutorial: Generative Adversarial Networks}
 \end{frame}
-
-%------------------------------------------------
-\begin{frame}
-	\begin{figure}[h!]
-	\centering
-	\includegraphics[width=0.6\textwidth]{ntm_comp_graph.jpg}
-	\caption{Neural turing machines computational graph}
-	\label{fig:ntm_comp_graph}
-	\end{figure}
-
-\end{frame}
 %------------------------------------------------
 \begin{frame}
 	\frametitle{The great idea}
+	\pause
 	\begin{itemize}[<+->]
 		\item Neural network is a computational graph!
 		\item Cost function \textit{is a part of} that computational graph
@@ -412,17 +375,6 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 	\pause[6]
 	\begin{itemize}
 		\item Two-step optimization optimization process
-	\end{itemize}
-\end{frame}
-
-%------------------------------------------------
-\begin{frame}
-	\frametitle{Intuitive approach}
-	\begin{itemize}[<+->]
-		\item Forger and the police
-		\item Forger tries to create real looking money
-		\item Police tries to get better at detecting fake money
-		\item They both keep improving until the difference between fake and real money is imperceptible to us
 	\end{itemize}
 \end{frame}
 
@@ -699,6 +651,25 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 	\end{itemize}
 \end{frame}
 %------------------------------------------------
+
+\begin{frame}
+	\frametitle{Short history of training GANs - January 2017}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.9\textwidth]{wgan_paper.png}
+	\end{figure}
+	\begin{exampleblock}{WGAN Value function}
+	\[
+		\min_G \max_{D \in \mathcal{D}} \mathbb{E}_{\bm{x} \sim \mathbb{P}_r} \left[ D(\bm{x}) \right] - \mathbb{E}_{\bm{z} \sim \mathcal{Z}} \left[ D(G(\bm{z}))  \right]
+	\]
+	\begin{center}
+		$\mathcal{D}$ - set of all K-Lipschitz functions
+	\end{center}
+	\end{exampleblock}
+\end{frame}
+
+%------------------------------------------------
+
 \begin{frame}
 	\frametitle{Short history of training GANs}
 	\begin{exampleblock}{EM distance}
@@ -744,24 +715,28 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 	\footnotetext{\url{https://en.wikipedia.org/wiki/Lipschitz_continuity}}
 \end{frame}
 
-%------------------------------------------------
 
+%------------------------------------------------
 \begin{frame}
-	\frametitle{Short history of training GANs - January 2017}
+	\frametitle{Meaningful loss function}
 	\begin{figure}[h!]
 		\centering
-		\includegraphics[width=0.9\textwidth]{wgan_paper.png}
+		\includegraphics[width=\textwidth]{wgan_loss.jpg}
 	\end{figure}
-	\begin{exampleblock}{WGAN Value function}
-	\[
-		\min_G \max_{D \in \mathcal{D}} \mathbb{E}_{\bm{x} \sim \mathbb{P}_r} \left[ D(\bm{x}) \right] - \mathbb{E}_{\bm{z} \sim \mathcal{Z}} \left[ D(G(\bm{z}))  \right]
-	\]
-	\begin{center}
-		$\mathcal{D}$ - set of all K-Lipschitz functions
-	\end{center}
-	\end{exampleblock}
-	\pause
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}
+	\frametitle{Wasserstein GAN}
+	\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{GAN_optimization_two_step.png}
+	\end{figure}
 	\begin{itemize}
+		\item Using EM distance instead of JS-divergence leads to robust models
+		\item Theoretical and empirical data
+		\item No need for tricks 
+		\pause
 		\item Open question - how to effectively enforce the Lipschitz constraint?
 	\end{itemize}
 \end{frame}
@@ -841,30 +816,6 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 		\item Enforcing the Lipschitz constraint with a gradient penalty regularization term
 		\item Improvements?
 	\end{itemize}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-	\frametitle{Recap}
-	\begin{figure}[h!]
-	\centering
-	\includegraphics[width=\textwidth]{GAN_optimization_two_step.png}
-	\end{figure}
-	\begin{itemize}
-		\item Using EM distance instead of JS-divergence leads to robust models
-		\item Theoretical and empirical data
-		\item No need for tricks 
-	\end{itemize}
-\end{frame}
-
-%------------------------------------------------
-\begin{frame}
-	\frametitle{Meaningful loss function}
-	\begin{figure}[h!]
-		\centering
-		\includegraphics[width=\textwidth]{wgan_loss.jpg}
-	\end{figure}
 \end{frame}
 
 %------------------------------------------------
@@ -987,16 +938,6 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 	\item Should work without any hyperparameter tuning
 \end{itemize}
 \end{frame}
-%------------------------------------------------
-\begin{frame}
-\frametitle{Perspectives}
-\begin{itemize}
-	\item Matching distributions
-	\item Neural network as a cost function
-	\item Modular training
-	\item Two player minimax game
-\end{itemize}
-\end{frame}
 
 %------------------------------------------------
 
@@ -1061,6 +1002,7 @@ NIPS 2016 Tutorial: Generative Adversarial Networks}
 \frametitle{History of great ideas in deep learning}
 
 \begin{itemize}[<+(1)->]
+
 	\item Need for feature engineering before applying ML model!
 	\item \textbf{Oh, neural networks can do that.} Too bad we still have to figure out which cost function to use...
 	\item \textbf{Oh, GANs can figure out the cost function by themselves!} Too bad we still have to find the correct way to do the optimization...
