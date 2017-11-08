@@ -1,11 +1,16 @@
 # Generative Adversarial Networks Lecture
 
-### Petnica Summer School on Machine Learning 2017
-
-This repository contains the presentation and the code for the workshop for the GAN lecture on [PSIML 2017](http://psiml.petnica.rs/).
+This repository contains the presentation and the code for the workshop for my GAN lecture on which i presented on:
+* Petnica Summer School of Machine Learning [PSIML 2017](http://psiml.petnica.rs/).
+* Ruđer Bošković Institute internal seminars [IRB](http://www.irb.hr/)
 
 ![](assets/gan_training_regime.png)
+
 ---
+
+### Presentation
+
+Different versions of the presentation can be found in multiple branches. Newest version can be found [here](https://github.com/bgavran/GAN_Lecture_Materials/blob/irb_seminar/presentation/presentation.pdf) (November 2017).
 
 ### Workshop starting point
 
