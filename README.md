@@ -3,6 +3,7 @@
 This repository contains the presentation and the code for the workshop for my GAN lecture on which i presented on:
 * Petnica Summer School of Machine Learning [PSIML 2017](http://psiml.petnica.rs/).
 * Ruđer Bošković Institute internal seminars [IRB](http://www.irb.hr/)
+* TakeLab internal seminars [TL](http://takelab.fer.hr/)
 
 ![](assets/gan_training_regime.png)
 
