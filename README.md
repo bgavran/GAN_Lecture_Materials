@@ -1,7 +1,7 @@
 # Generative Adversarial Networks Lecture
 
 This repository contains the presentation and the code for the workshop for my GAN lecture on which i presented on:
-* Petnica Summer School of Machine Learning [PSIML 2017](http://psiml.petnica.rs/).
+* Petnica Summer School of Machine Learning [PSIML 2017, 2018](http://psiml.petnica.rs/).
 * Ruđer Bošković Institute internal seminars [IRB](http://www.irb.hr/)
 * TakeLab internal seminars [TL](http://takelab.fer.hr/)
 
@@ -11,7 +11,7 @@ This repository contains the presentation and the code for the workshop for my G
 
 ### Presentation
 
-Different versions of the presentation can be found in multiple branches. Newest version can be found [here](https://github.com/bgavran/GAN_Lecture_Materials/blob/irb_seminar/presentation/presentation.pdf) (November 2017).
+Different versions of the presentation can be found in multiple branches. Newest version can be found [here](https://github.com/bgavran/GAN_Lecture_Materials/blob/master/presentation/presentation.pdf) (July 2018).
 
 ### Workshop starting point
 
